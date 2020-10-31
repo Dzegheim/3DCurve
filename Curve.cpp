@@ -10,9 +10,7 @@
 //https://github.com/danielaparker/jsoncons
 #include <jsoncons/json.hpp>
 
-//Should be in the same project
 #include "VectorOperations.h"
-//In Libraries
 #include "Pipeline.h"
 #include "ExploreDirectory.h"
 
@@ -20,6 +18,7 @@ using VectorOpearations::GetVariation;
 using VectorOpearations::Normalize;
 using VectorOpearations::CrossProduct;
 
+//Set this as you like, just try and keep it more than 3 otherwise it'll segfault (:
 #define MINIMUM_WORKING_CONDITION 5
 
 void WriteData (const jsoncons::wojson& JData, const std::filesystem::path& OutPath, 
@@ -194,7 +193,7 @@ int main(int Nargs, char** Args) {
 					std::advance(BinormAdv, 1);
 					auto BinDer = SupportJ[L"BinormDer"].array_range().begin();
 					auto BinDerEnd = SupportJ[L"BinormDer"].array_range().end();
-					auto Torq = JData[L"Torsion"].array_range().begin();
+					auto Tors = JData[L"Torsion"].array_range().begin();
 					while (BinDer != BinDerEnd) {
 						GetVariation (
 							DeltaS,
@@ -203,14 +202,14 @@ int main(int Nargs, char** Args) {
 							(*Binorm).array_range().end(),
 							(*BinormAdv).array_range().begin()
 							);
-						*Torq = -Normalize <double> (
+						*Tors = -Normalize <double> (
 							(*BinDer).array_range().begin(),
 							(*BinDer).array_range().end()
 							);
 						++Binorm;
 						++BinormAdv;
 						++BinDer;
-						++Torq;
+						++Tors;
 					}
 				}
 				//Dump everything to file
