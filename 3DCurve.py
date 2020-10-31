@@ -42,8 +42,8 @@ def GetData(Data, Key):
 	return np.array(NewData)
 
 #Code to check if vector is unitary
-NormMin = 0.95#99
-NormMax = 1.05#001
+NormMin = 0.95
+NormMax = 1.05
 NormTolMin = 0.90
 NormTolMax = 1.10
 def CheckNorm(Data, Verbose, Mode):

@@ -116,7 +116,7 @@ int main(int Nargs, char** Args) {
 				JData[L"Normals"]   = jsoncons::wojson::make_array<2>(JData[L"Coordinates"].size()-2, 3, 0.);
 				JData[L"Binormals"] = jsoncons::wojson::make_array<2>(JData[L"Coordinates"].size()-2, 3, 0.);
 				JData[L"Curvature"] = jsoncons::wojson::make_array<1>(JData[L"Coordinates"].size()-2, 0.);
-				JData[L"Torsion"]    = jsoncons::wojson::make_array<1>(JData[L"Coordinates"].size()-3, 0.);
+				JData[L"Torsion"]   = jsoncons::wojson::make_array<1>(JData[L"Coordinates"].size()-3, 0.);
 				//Get the tangent unitary vectors
 				{
 					auto CoordAdv = JData[L"Coordinates"].array_range().begin();
