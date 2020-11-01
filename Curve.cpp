@@ -179,6 +179,10 @@ int main(int Nargs, char** Args) {
 							(*Tang).array_range().begin(),
 							(*Norm).array_range().begin()
 						);
+						Normalize <double> (
+							(*Binorm).array_range().begin(),
+							(*Binorm).array_range().end()
+							);
 						++Tang;
 						++Norm;
 						++Binorm;
