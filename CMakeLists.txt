@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 17)            # Enable c++17 standard
 set(CMAKE_CXX_COMPILER g++)           # Force g++
 set(CMAKE_VERBOSE_MAKEFILE ON)        # Verbose
 
-set(SOURCE_FILES  "Curve.cpp" 
+set(SOURCE_FILES "Curve.cpp" 
 	"Pipeline.cpp" 
 	"ExploreDirectory.cpp"
 	)

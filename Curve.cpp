@@ -18,7 +18,7 @@ using VectorOpearations::GetVariation;
 using VectorOpearations::Normalize;
 using VectorOpearations::CrossProduct;
 
-//Set this as you like, just try and keep it more than 3 otherwise it'll segfault (:
+//Set this as you like, just try and keep it more than 4 otherwise it'll segfault (:
 #define MINIMUM_WORKING_CONDITION 5
 
 void WriteData (const jsoncons::wojson& JData, const std::filesystem::path& OutPath, 
@@ -115,8 +115,9 @@ int main(int Nargs, char** Args) {
 				JData[L"Tangents"]  = jsoncons::wojson::make_array<2>(JData[L"Coordinates"].size()-1, 3, 0.);
 				JData[L"Normals"]   = jsoncons::wojson::make_array<2>(JData[L"Coordinates"].size()-2, 3, 0.);
 				JData[L"Binormals"] = jsoncons::wojson::make_array<2>(JData[L"Coordinates"].size()-2, 3, 0.);
+				JData[L"BinormDer"] = jsoncons::wojson::make_array<2>(JData[L"Coordinates"].size()-3, 3, 0.);
 				JData[L"Curvature"] = jsoncons::wojson::make_array<1>(JData[L"Coordinates"].size()-2, 0.);
-				JData[L"Torsion"]   = jsoncons::wojson::make_array<1>(JData[L"Coordinates"].size()-3, 0.);
+				//JData[L"Torsion"]   = jsoncons::wojson::make_array<1>(JData[L"Coordinates"].size()-3, 0.);
 				//Get the tangent unitary vectors
 				{
 					auto CoordAdv = JData[L"Coordinates"].array_range().begin();
@@ -190,14 +191,12 @@ int main(int Nargs, char** Args) {
 				}
 				//Get the torsion
 				{
-					jsoncons::wojson SupportJ;
-					SupportJ[L"BinormDer"] = jsoncons::wojson::make_array<2>(JData[L"Coordinates"].size()-3, 3, 0.);
 					auto Binorm = JData[L"Binormals"].array_range().begin();
 					auto BinormAdv = JData[L"Binormals"].array_range().begin();
 					std::advance(BinormAdv, 1);
-					auto BinDer = SupportJ[L"BinormDer"].array_range().begin();
-					auto BinDerEnd = SupportJ[L"BinormDer"].array_range().end();
-					auto Tors = JData[L"Torsion"].array_range().begin();
+					auto BinDer = JData[L"BinormDer"].array_range().begin();
+					auto BinDerEnd = JData[L"BinormDer"].array_range().end();
+					//auto Tors = JData[L"Torsion"].array_range().begin();
 					while (BinDer != BinDerEnd) {
 						GetVariation (
 							DeltaS,
@@ -206,14 +205,14 @@ int main(int Nargs, char** Args) {
 							(*Binorm).array_range().end(),
 							(*BinormAdv).array_range().begin()
 							);
-						*Tors = -Normalize <double> (
+						/**Tors = -Normalize <double> (
 							(*BinDer).array_range().begin(),
 							(*BinDer).array_range().end()
-							);
+							);*/
 						++Binorm;
 						++BinormAdv;
 						++BinDer;
-						++Tors;
+						//++Tors;
 					}
 				}
 				//Dump everything to file
