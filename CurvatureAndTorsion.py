@@ -5,7 +5,7 @@ from scipy.optimize import curve_fit
 from scipy.stats import ks_2samp
 
 from CFurc_Argparse import ArgumentParser, SmartFormatter
-from CFurc_Plot import PlotAndSave, GetParamsFormat, SetTicksY, LogAxisY
+from CFurc_Plot import PlotAndSave, SetTicksY, LogAxisY
 from CFurc_OSManip import NoFiles, GetFiles
 from CFurc_FitFuncs import ExpLawT, PowLawT, GammaLawT
 
