@@ -9,7 +9,6 @@ from CFurc_OSManip import NoFiles, GetFiles, CheckSizes
 from CFurc_DataManip import GetNonNullData, CheckNorm, CheckOrtho
 from CFurc_Colors import RED, GREEN, YELLOW, BLUE, END, BOLD
 
- 
 Parser = ArgumentParser(description = "", formatter_class = SmartFormatter)
 Parser.add_argument("Directory", metavar= "-D", type = str, action = "store", help = "Path to the directory containing the files.")
 Parser.add_argument("Keys", metavar = "-K", nargs = "+", help = "A list of keys. All files in the folder containing a Key in the name will be read. If a file contains two or more keys it will be read more than once. If each key is associated only to a single file there are no requirements for confirmation on plotting.")
