@@ -1,15 +1,15 @@
-import matplotlib.pyplot as plt
-import matplotlib.ticker as tk
+from matplotlib.pyplot import close, savefig, show, get_current_fig_manager, tight_layout
+from matplotlib.ticker import FuncFormatter
 from numpy import log10
 
 def PlotAndSave(Plot = True, Save = False, Name = "", Format = "pdf"):
-    if (Plot): 
-        figManager = plt.get_current_fig_manager()
-        figManager.window.showMaximized()
-        plt.show()
     if (Save):
-        plt.savefig(fname = Name+"."+Format, format = Format)
-    plt.close()
+        savefig(fname = Name+"."+Format, format = Format)
+    if (Plot):
+        figManager = get_current_fig_manager()
+        figManager.window.showMaximized()
+        show()
+    close()
     return
 
 def GetParamsFormat (Params, Errors, Names):
@@ -26,10 +26,10 @@ def SetTicksY (Ax, Minor = False, EveryNth = 1):
 
 def LogAxisY (Ax, Minor = False, MajorDecimal = 1, MinorDecimal = 1):
     MajorString = "{:."+str(MajorDecimal)+"f}"
-    Ax.yaxis.set_major_formatter(tk.FuncFormatter(lambda X, _ : MajorString.format(log10(X))))
+    Ax.yaxis.set_major_formatter(FuncFormatter(lambda X, _ : MajorString.format(log10(X))))
     if Minor:
         MinorString = "{:."+str(MinorDecimal)+"f}"
-        Ax.yaxis.set_minor_formatter(tk.FuncFormatter(lambda X, _ : MinorString.format(log10(X))))
+        Ax.yaxis.set_minor_formatter(FuncFormatter(lambda X, _ : MinorString.format(log10(X))))
     return
 
 def SetTicksX (Ax, Minor = False, EveryNth = 1):
@@ -40,8 +40,8 @@ def SetTicksX (Ax, Minor = False, EveryNth = 1):
 
 def LogAxisY (Ax, Minor = False, MajorDecimal = 1, MinorDecimal = 1):
     MajorString = "{:."+str(MajorDecimal)+"f}"
-    Ax.yaxis.set_major_formatter(tk.FuncFormatter(lambda X, _ : MajorString.format(log10(X))))
+    Ax.yaxis.set_major_formatter(FuncFormatter(lambda X, _ : MajorString.format(log10(X))))
     if Minor:
         MinorString = "{:."+str(MinorDecimal)+"f}"
-        Ax.yaxis.set_minor_formatter(tk.FuncFormatter(lambda X, _ : MinorString.format(log10(X))))
+        Ax.yaxis.set_minor_formatter(FuncFormatter(lambda X, _ : MinorString.format(log10(X))))
     return

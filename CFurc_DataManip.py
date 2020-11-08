@@ -56,3 +56,6 @@ def DivideEvenUneven (Data, LimEven, LimUneven):
     Even = array([Data[I] for I in range(len(Data)) if Data[I] and not I%2 and Data[I] < LimEven])
     Uneven = array([Data[I] for I in range(len(Data)) if Data[I] and I%2 and Data[I] < LimUneven])
     return (Even, Uneven)
+
+def GetCostFunc (Data):
+    return array([1-Data[I+1]/Data[I] for I in range(len(Data)-1)])

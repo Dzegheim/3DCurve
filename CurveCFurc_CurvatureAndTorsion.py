@@ -16,8 +16,8 @@ Exps = ["E1", "E2", "E3", "E4", "E1", "E2", "E3", "E4"]
 FastSlow = ["fast", "fast", "fast", "fast", "slow", "slow", "slow", "slow"]
 Food = ["food", "no food", "food", "no food", "food", "no food", "food", "no food"]
 Fits = ["ExpLawT", "PowLawT", "ExpLawT", "PowLawT", "ExpLawT", "ExpLawT", "ExpLawT", "ExpLawT"]
-K0 = [2, 2, 2, 2, 2, 3, 2, 3]
-K1 = [15, 20, 16, 20, 9, 13, 10, 12]
+K0 = [2, 1, 2, 1, 2, 3, 2, 3]
+K1 = [15, 16, 16, 14, 9, 13, 10, 12]
 ParamsInit = [
     #Fast
     [ 0.04819713, -0.1543169 ,  2.17366977],
@@ -76,7 +76,7 @@ for Files in AllFiles:
         Ax1 = Fig.add_subplot(Grid[1, 0])
         Curv = [X for X in Data["Curvature"] if X is not None]
         DsTorsVsNorm = [-dot(X[0], X[1]) for X in zip(Data["Normals"][:len(Data["Normals"])-2], Data["BinormDer"]) if all(A is not None for A in X[0]) and all(A is not None for A in X[1])]
-        Hist, Bins, Cosi = Ax0.hist(Curv, bins = NBins[Ind], density =  True, stacked = True)
+        Hist, Bins, _ = Ax0.hist(Curv, bins = NBins[Ind], density =  True, stacked = True)
                 
         BinsCenter = mean(vstack([Bins[0:-1], Bins[1:]]), axis=0)
         Params, Covs = curve_fit(PossibleFits[Fits[Ind]], BinsCenter[K0[Ind]:K1[Ind]], Hist[K0[Ind]:K1[Ind]], p0=ParamsInit[Ind], sigma = sqrt(Hist[K0[Ind]:K1[Ind]]), maxfev = 1000000000)
@@ -86,30 +86,19 @@ for Files in AllFiles:
 
         Stat, Prob = ks_2samp(Hist[K0[Ind]:K1[Ind]], YY)
         FitLabel = Labels[Fits[Ind]]+"\nKS test probability: {:.3f}".format(Prob)+"\n${:}$ $=$ ${:2.2f}\\pm {:.2f}$".format(Names[Fits[Ind]][1], Params[1], sqrt(diag(Covs))[1])
-
-        print ()
-        print (Params)
-        print (sqrt(diag(Covs)))
-        print (Prob)
-        print ()
                 
-        Ax0.set_xlabel("Curvature ($mm^{-1}$)")
-        Ax0.set_ylabel("$\\log_{10}\\left(PDF\\right)$")
+        Ax0.set_xlabel("Curvature ($mm^{-1}$)", fontsize = 14)
+        Ax0.set_ylabel("PDF", fontsize = 14)
         Ax0.set_yscale("log")
-        #SetTicksY(Ax0, False, 1)
-        #SetTicksY(Ax0, True, 1000000)
-        #LogAxisY(Ax0, True, 0, 1)
         Ax0.plot(XX, YY, color = "red", label = FitLabel)
+        Ax0.set_xlim(0., Bins[K1[Ind]]*1.08)
         Ax0.legend(loc='upper right', frameon = False)
 
-        Ax1.hist(DsTorsVsNorm, bins = NBins[Ind], density =  True, stacked = True)
-        #Ax1.hist(Tors, bins = NBins[Ind])
-        Ax1.set_xlabel("Torsion ($mm^{-1}$)")
-        Ax1.set_ylabel("$\\log_{10}\\left(PDF\\right)$")
+        TorsHist, TorsBins, _ = Ax1.hist(DsTorsVsNorm, bins = NBins[Ind], density =  True, stacked = True)
+        Ax1.set_xlabel("Torsion ($mm^{-1}$)", fontsize = 14)
+        Ax1.set_ylabel("PDF", fontsize = 14)
         Ax1.set_yscale("log")
-        #LogAxisY(Ax1, True, 2, 2)
-        #SetTicksY(Ax1, False, 1)
-        #SetTicksY(Ax1, True, TorsMinTicks[Ind])
+        Ax1.set_xlim(-Bins[K1[Ind]]*1.08 if FastSlow[Ind] == "fast" else TorsBins[0], Bins[K1[Ind]]*1.08 if FastSlow[Ind] == "fast" else TorsBins[-1])
         
-        Fig.suptitle(Exps[Ind]+" ("+FastSlow[Ind]+", "+Food[Ind]+") curvature and torsion histogram.")
+        Fig.suptitle(Exps[Ind]+" ("+FastSlow[Ind]+", "+Food[Ind]+") curvature and torsion", fontsize = 24)
         PlotAndSave(Plot = Args.P, Save = Args.S, Format = "pdf", Name = "./Figs/CurvTors"+Exps[Ind]+FastSlow[Ind])
