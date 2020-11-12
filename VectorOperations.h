@@ -47,7 +47,7 @@ T VectorOpearations::Normalize (InIt Beg, InIt End) {
 template<typename T, typename InIt, typename OutIt>
 void VectorOpearations::GetVariation (const T DeltaS, OutIt Out, InIt Beg1, InIt End1, InIt Beg2) {
 	while (Beg1 != End1) {
-		*Out = (*Beg1-*Beg2)/DeltaS;
+		*Out = (*Beg2-*Beg1)/DeltaS;
 		++Out;
 		++Beg1;
 		++Beg2;
